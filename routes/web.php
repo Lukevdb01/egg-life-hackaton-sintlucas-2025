@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EggController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -9,8 +10,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    //hier komt alle authenticated routes
     Route::get('dashboard', [DashboardController::class, 'overview'])->name('dashboard');
+    Route::post('/update-love', [EggController::class, 'updateLove'])->name('update-love');
+    Route::post('/click-update-love', [EggController::class, 'clickUpdateLove'])->name('click-update-love');
 });
 
 //require __DIR__.'/settings.php';
