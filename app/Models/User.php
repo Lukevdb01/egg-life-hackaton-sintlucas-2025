@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -44,5 +45,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function egg(): HasOne
+    {
+        return $this->hasOne(Egg::class);
+    }
+
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            $user->egg()->create(); // Automatically creates an egg with default values
+        });
     }
 }
