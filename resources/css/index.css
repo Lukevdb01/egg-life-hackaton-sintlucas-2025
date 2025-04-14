@@ -11,6 +11,7 @@
 #sponge-actor {
     width: 64px;
     height: 64px;
+    transition: none !important;
     position: fixed;
     top: 0;
     left: 0;

@@ -6,8 +6,8 @@ const props = defineProps({
     },
 });
 
-const color1 = ref('rgba(186, 45, 45, 1)') // starting color of the gradient
-const color2 = ref('rgba(45, 122, 189, 1)') // ending color of the gradient
+const color1 = ref('rgba(45, 122, 189, 1)') // ending color of the gradient
+const color2 = ref('rgba(186, 45, 45, 1)') // starting color of the gradient
 
 const svg_data = [
     /* temperature normal */
@@ -38,7 +38,7 @@ const get_svg = () => {
         return svg_data[2];
     } else if (props.temperature >= 20) {
         return svg_data[1];
-    } else if(props.temperature >= 60) {
+    } else if (props.temperature >= 60) {
         return svg_data[0];
     }
 }
@@ -49,10 +49,11 @@ const get_svg = () => {
         <svg :width="get_svg().width" :height="get_svg().height"
             :viewBox="`0 0 ${get_svg().width}  ${get_svg().height}`" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
-                <linearGradient id="gradient-fillion" x1="0%" y1="0%" x2="0%" :y2="temperature + '%'">
-                    <stop :offset="'0%'" :style="{ stopColor: color1, stopOpacity: 1 }" />
-                    <stop :offset="'100%'" :style="{ stopColor: color2, stopOpacity: 1 }" />
+                <linearGradient id="gradient-fillion" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop :offset="(100 - props.temperature) + '%'" :style="{ stopColor: color1, stopOpacity: 1 }" />
+                    <stop :offset="(100 - props.temperature) + '%'" :style="{ stopColor: color2, stopOpacity: 1 }" />
                 </linearGradient>
+
             </defs>
             <path :d="get_svg().value" :stroke-width="get_svg().stroke_width" :fill="'url(#gradient-fillion)'"
                 stroke-linecap="round" stroke-linejoin="round" stroke="black" />

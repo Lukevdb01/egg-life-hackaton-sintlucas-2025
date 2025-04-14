@@ -6,8 +6,6 @@ const spawn_sponge = () => {
     const container = document.getElementById('container');
     container?.appendChild(element);
 
-    const rect = container?.getBoundingClientRect();
-
     const follower = document.getElementById('sponge-actor');
     document.addEventListener('mousemove', (e) => {
         const x = e.clientX;
