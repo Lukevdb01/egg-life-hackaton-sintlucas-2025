@@ -27,5 +27,4 @@ const props = defineProps({
 <template>
     <Head title="Dashboard" />
     <EggLayout :data="page_data"/>
-    <TabBar/>
 </template>

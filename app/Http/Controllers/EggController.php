@@ -30,4 +30,27 @@ class EggController extends Controller
     {
         return $this->updateLove($request, -1);
     }
+
+    public function uploadTemperature(Request $request, int $change): JsonResponse
+    {
+        $user = auth()->user();
+        $egg = $user->egg;
+
+        $egg->temperature = max(0, min(100, $egg->temperature + $change));
+        $egg->save();
+
+        return response()->json([
+            'temperature' => $egg->temperature,
+        ]);
+    }
+
+    public function decreaseUpdateTemperature(Request $request): JsonResponse
+    {
+        return $this->uploadTemperature($request, -1);
+    }
+
+    public function clickIncreaseUpdateTemp(Request $request): JsonResponse
+    {
+        return $this->uploadTemperature($request, 10);
+    }
 }

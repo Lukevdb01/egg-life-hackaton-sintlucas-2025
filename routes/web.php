@@ -14,6 +14,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/update-love', [EggController::class, 'updateLove'])->name('update-love');
     Route::post('/click-increase-update-love', [EggController::class, 'clickIncreaseUpdateLove'])->name('click-update-love');
     Route::post('/decrease-update-love', [EggController::class, 'decreaseUpdateLove'])->name('decrease-update-love');
+    Route::post('/decrease-update-temperature', [EggController::class, 'decreaseUpdateTemperature'])->name('decrease-update-temperature');
+    Route::post('/click-increase-update-temperature', [EggController::class, 'clickIncreaseUpdateTemp'])->name('click-increase-update-temperature');
+
 });
 
 //require __DIR__.'/settings.php';

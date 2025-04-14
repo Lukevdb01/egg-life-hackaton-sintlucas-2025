@@ -4,6 +4,7 @@ import Egg from "@/egg-app-ui/Egg.vue";
 import Header from "@/egg-app-ui/header.vue";
 import axios from "axios";
 import {onMounted, ref, watchEffect} from "vue";
+import TabBar from "@/egg-app-ui/tab-bar.vue";
 
 const props = defineProps({
     data: {
@@ -21,6 +22,13 @@ const updateLove = async () => {
   }
 };
 
+const updateTemp = async () => {
+  if (temperature.value < 100) {
+    const response = await axios.post('/click-increase-update-temperature', {});
+    temperature.value = response.data.temperature;
+  }
+};
+
 const decrementLove = async () => {
   if (love.value > 0) {
     const response = await axios.post(route('decrease-update-love'), {});
@@ -29,13 +37,27 @@ const decrementLove = async () => {
   }
 };
 
+const decrementTemperature = async () => {
+  if (temperature.value > 0) {
+    const response = await axios.post(route('decrease-update-temperature'), {});
+
+    temperature.value = response.data.temperature;
+  }
+};
+
 onMounted(() => {
-  const interval = setInterval(() => {
+  const loveInterval = setInterval(() => {
     decrementLove();
   }, 10000);
+  const temperatureInterval = setInterval(() => {
+    decrementTemperature();
+  }, 50000);
 
   watchEffect(() => {
-    return () => clearInterval(interval);
+    return () => {
+          clearInterval(loveInterval);
+          clearInterval(temperatureInterval);
+      };
   });
 });
 </script>
@@ -45,4 +67,5 @@ onMounted(() => {
   <div class="h-full w-full flex items-center bg-[#ebebeb] justify-center">
         <Egg :temperature="temperature" @eggClicked="updateLove"/>
     </div>
+    <TabBar @tempClicked="updateTemp"/>
 </template>
