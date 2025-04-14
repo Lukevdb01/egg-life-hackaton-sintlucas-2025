@@ -5,6 +5,7 @@ import { Head } from '@inertiajs/vue3';
 import Header from '@/egg-app-ui/header.vue';
 import TabBar from '@/egg-app-ui/tab-bar.vue';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
+import EggLayout from "@/egg-app-ui/EggLayout.vue";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,9 +17,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 <template>
     <Head title="Dashboard" />
-    <Header></Header>
-    <main>
-        <div id="canvas"></div>
-    </main>
-    <TabBar></TabBar>
+    <Header/>
+    <EggLayout/>
+    <TabBar/>
 </template>
