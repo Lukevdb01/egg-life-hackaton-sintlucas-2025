@@ -7,3 +7,12 @@
     flex-direction: column;
     height: 100vh;
 }
+
+#sponge-actor {
+    width: 64px;
+    height: 64px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
