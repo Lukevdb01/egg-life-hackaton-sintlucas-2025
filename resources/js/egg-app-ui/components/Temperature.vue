@@ -45,7 +45,7 @@ const get_svg = () => {
 </script>
 
 <template>
-    <section>
+    <section class="flex items-center">
         <svg :width="get_svg().width" :height="get_svg().height"
             :viewBox="`0 0 ${get_svg().width}  ${get_svg().height}`" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -57,5 +57,6 @@ const get_svg = () => {
             <path :d="get_svg().value" :stroke-width="get_svg().stroke_width" :fill="'url(#gradient-fillion)'"
                 stroke-linecap="round" stroke-linejoin="round" stroke="black" />
         </svg>
+        <p class="text-black font-bold">% {{temperature}}</p>
     </section>
 </template>

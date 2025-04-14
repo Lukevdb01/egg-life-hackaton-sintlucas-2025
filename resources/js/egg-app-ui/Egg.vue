@@ -3,19 +3,21 @@ import { ref } from 'vue'
 import axios from "axios";
 
 const props = defineProps({
-    data: {
-        type: Object,
-        default: () => ({}),
+    temperature: {
+        type: Number,
+        default: 0,
     },
 })
 
-const temperature = ref(props.data.egg.temperature)
+const emit = defineEmits(['updateLove', 'eggClicked']);
+
+const temperature = ref(props.temperature)
 const color1 = ref('rgba(186, 45, 45, 1)')
 const color2 = ref('rgba(188, 122, 67, 1)')
 
 const eggClicked = () => {
-    alert('Egg clicked!')
-}
+        emit('eggClicked');
+};
 
 </script>
 

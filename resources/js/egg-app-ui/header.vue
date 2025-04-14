@@ -5,40 +5,25 @@ import axios from 'axios';
 import Temperature from './components/Temperature.vue';
 
 const props = defineProps({
-    data: {
-        type: Object,
-        default: () => ({}),
+    love: {
+        type: Number,
+        default: 50,
+    },
+    temperature: {
+        type: Number,
+        default: 0,
     },
 });
 
-const love = ref(props.data.egg.love);
-const inverted_love = computed(() => `${100 - love.value}%`)
+const inverted_love = computed(() => `${100 - props.love}%`)
 const color1 = ref('rgba(79, 78, 78, 1)') // ending color of the gradient
 const color2 = ref('rgba(186, 45, 45, 1)') // starting color of the gradient
-
-const decrementLove = async () => {
-    if (love.value > 0) {
-        const response = await axios.post(route('update-love'), {});
-
-        love.value = response.data.love;
-    }
-};
-
-onMounted(() => {
-    const interval = setInterval(() => {
-        decrementLove();
-    }, 10000);
-
-    watchEffect(() => {
-        return () => clearInterval(interval);
-    });
-});
 </script>
 
 <template>
     <header class="bg-white h-[88px] flex flex-row items-end w-full">
         <ol class="flex flex-row gap-2 items-center px-4 justify-end w-full h-full">
-            <Temperature :temperature="20"/>
+            <Temperature :temperature="temperature"/>
             <svg width="49" height="43" viewBox="0 0 49 43" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="gradient-fill" x1="0%" y1="0%" x2="0%" :y2="inverted_love">

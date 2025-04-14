@@ -12,7 +12,8 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'overview'])->name('dashboard');
     Route::post('/update-love', [EggController::class, 'updateLove'])->name('update-love');
-    Route::post('/click-update-love', [EggController::class, 'clickUpdateLove'])->name('click-update-love');
+    Route::post('/click-increase-update-love', [EggController::class, 'clickIncreaseUpdateLove'])->name('click-update-love');
+    Route::post('/decrease-update-love', [EggController::class, 'decreaseUpdateLove'])->name('decrease-update-love');
 });
 
 //require __DIR__.'/settings.php';
