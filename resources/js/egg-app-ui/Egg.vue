@@ -1,7 +1,23 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
-    <img src="/public/images/egg.svg" id="egg-element" alt="">
+    <section>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 287 287">
+        <defs>
+            <linearGradient id="egg-gradient" x1="0%" y1="0%" x2="0%" :y2="temperature + '%'">
+                <stop :offset="'0%'" :style="{ stopColor: color1, stopOpacity: 1 }" />
+                <stop :offset="'100%'" :style="{ stopColor: color2, stopOpacity: 1 }" />
+            </linearGradient>
+        </defs>
+        <path
+            d="M244.887 177.237C244.887 256.484 199.553 287 143.5 287C87.4471 287 42.1129 256.484 42.1129 177.237C42.1129 97.99 87.4471 0 143.5 0C199.553 0 244.887 97.9314 244.887 177.237Z"
+            :fill="'url(#egg-gradient)'" />
+    </svg>
+    </section>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const temperature = ref(50) // Starting temperature
+const color1 = ref('rgba(186, 45, 45, 1)')
+const color2 = ref('rgba(188, 122, 67, 1)')
+</script>
