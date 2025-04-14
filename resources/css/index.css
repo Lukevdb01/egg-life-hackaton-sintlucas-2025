@@ -1,0 +1,9 @@
+* {
+    transition: all 0.2s ease-in-out;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
