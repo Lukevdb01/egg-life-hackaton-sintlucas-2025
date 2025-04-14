@@ -10,7 +10,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="">
+    <div class="h-full w-full flex items-center justify-center">
         <Egg :data="data"/>
     </div>
 </template>

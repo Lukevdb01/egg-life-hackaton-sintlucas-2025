@@ -21,7 +21,7 @@ const eggClicked = () => {
 
 <template>
     <section>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 287 287" @click="eggClicked">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-[287px] h-auto" viewBox="0 0 287 287" @click="eggClicked">
         <defs>
             <linearGradient id="egg-gradient" x1="0%" y1="0%" x2="0%" :y2="temperature + '%'">
                 <stop :offset="'0%'" :style="{ stopColor: color1, stopOpacity: 1 }" />
