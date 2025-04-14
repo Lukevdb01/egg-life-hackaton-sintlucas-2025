@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import axios from "axios";
 
 const props = defineProps({
     data: {
@@ -11,11 +12,16 @@ const props = defineProps({
 const temperature = ref(props.data.egg.temperature)
 const color1 = ref('rgba(186, 45, 45, 1)')
 const color2 = ref('rgba(188, 122, 67, 1)')
+
+const eggClicked = () => {
+    alert('Egg clicked!')
+}
+
 </script>
 
 <template>
     <section>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 287 287">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 287 287" @click="eggClicked">
         <defs>
             <linearGradient id="egg-gradient" x1="0%" y1="0%" x2="0%" :y2="temperature + '%'">
                 <stop :offset="'0%'" :style="{ stopColor: color1, stopOpacity: 1 }" />

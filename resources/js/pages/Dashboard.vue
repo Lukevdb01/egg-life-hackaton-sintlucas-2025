@@ -8,6 +8,7 @@ import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 import EggLayout from "@/egg-app-ui/EggLayout.vue";
 import {onMounted} from "vue";
 
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
@@ -25,7 +26,7 @@ const props = defineProps({
 
 <template>
     <Head title="Dashboard" />
-    <Header/>
+    <Header :data="page_data"/>
     <EggLayout :data="page_data"/>
     <TabBar/>
 </template>
