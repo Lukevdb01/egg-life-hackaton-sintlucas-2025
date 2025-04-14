@@ -17,14 +17,14 @@ const spawn_sponge = () => {
     });
 }
 
-const eggClicked = () => {
+const tempClicked = () => {
     emit('tempClicked');
 };
 </script>
 
 <template>
     <div class="h-[110px] w-full bg-white flex items-center justify-between px-4">
-        <button @click="eggClicked"><img src="images/temperature-increase.svg"></button>
+        <button @click="tempClicked"><img src="images/temperature-increase.svg"></button>
         <button @click="spawn_sponge()"><img id="icon" src="images/sponge.png"></button>
     </div>
 </template>
