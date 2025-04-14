@@ -2,6 +2,8 @@
 import {ref, computed, onMounted, watchEffect} from 'vue'
 import axios from 'axios';
 
+import Temperature from './components/Temperature.vue';
+
 const props = defineProps({
     data: {
         type: Object,
@@ -36,6 +38,7 @@ onMounted(() => {
 <template>
     <header class="bg-[#D9D9D9] h-[88px] flex flex-row items-end w-full">
         <ol class="flex flex-row gap-2 items-center px-4 justify-end w-full h-full">
+            <Temperature :temperature="20"/>
             <svg width="49" height="43" viewBox="0 0 49 43" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="gradient-fill" x1="0%" y1="0%" x2="0%" :y2="inverted_love">
