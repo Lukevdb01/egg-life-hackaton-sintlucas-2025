@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const props = defineProps({
+    data: {
+        type: Object,
+        default: () => ({}),
+    },
+})
+
+const temperature = ref(props.data.egg.temperature)
+const color1 = ref('rgba(186, 45, 45, 1)')
+const color2 = ref('rgba(188, 122, 67, 1)')
+</script>
+
 <template>
     <section>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 287 287">
@@ -14,10 +29,3 @@
     </section>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
-
-const temperature = ref(50) // Starting temperature
-const color1 = ref('rgba(186, 45, 45, 1)')
-const color2 = ref('rgba(188, 122, 67, 1)')
-</script>

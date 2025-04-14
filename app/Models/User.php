@@ -14,6 +14,10 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
+     * @var mixed
+     */
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>

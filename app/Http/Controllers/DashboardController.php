@@ -3,11 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\EggService;
 
 class DashboardController extends Controller
 {
-    public function overview(Request $request)
+    public function overview(Request $request, EggService $eggService)
     {
-        return inertia('Dashboard');
+        $user = $request->user();
+        $eggData = $eggService->getEggData($user);
+
+        return inertia('Dashboard', [
+            'page_data' => [
+                'egg' => $eggData,
+            ],
+        ]);
     }
 }
