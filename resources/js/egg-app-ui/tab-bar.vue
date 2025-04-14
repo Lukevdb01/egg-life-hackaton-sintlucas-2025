@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const emit = defineEmits(['updateTemp', 'tempClicked']);
+
 const spawn_sponge = () => {
     const element = document.createElement('div');
     element.innerHTML += '<img src="images/sponge-actor.png" id="sponge-actor"/>';
@@ -14,11 +16,15 @@ const spawn_sponge = () => {
         follower.style.transform = `translate(${x}px, ${y}px)`;
     });
 }
+
+const eggClicked = () => {
+    emit('tempClicked');
+};
 </script>
 
 <template>
     <div class="h-[110px] w-full bg-white flex items-center justify-between px-4">
-        <button><img src="images/temperature-increase.svg"></button>
+        <button @click="eggClicked"><img src="images/temperature-increase.svg"></button>
         <button @click="spawn_sponge()"><img id="icon" src="images/sponge.png"></button>
     </div>
 </template>
