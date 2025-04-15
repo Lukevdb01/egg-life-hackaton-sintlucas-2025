@@ -5,7 +5,6 @@ import Header from "@/egg-app-ui/header.vue";
 import axios from "axios";
 import { onMounted, ref, watchEffect } from "vue";
 import TabBar from "@/egg-app-ui/tab-bar.vue";
-import audioEngine from "@/scripts/audioEngine";
 
 const props = defineProps({
     data: {
@@ -17,11 +16,6 @@ const love = ref(props.data.egg.love);
 const temperature = ref(props.data.egg.temperature);
 const containerRef = ref<HTMLElement | null>(null);
 const spongeRef = ref<HTMLElement | null>(null);
-
-const audioCtx = new AudioContext();
-const AudioEngine = new audioEngine(audioCtx);
-
-const clickSoundUrl = "/sounds/click.mp3";
 
 const updateLove = async () => {
     if (love.value < 100) {
@@ -56,20 +50,55 @@ const decrementTemperature = async () => {
 const setCheckContainerBounds = (spongeRef: HTMLElement) => {
     containerRef.value = document.getElementById('container') as HTMLElement;
     const rectOfContainer = containerRef.value.getBoundingClientRect();
-    const rectOfSponge = spongeRef.getBoundingClientRect();
 
-    containerRef.value.addEventListener('mousemove', () => {
-        if (!(rectOfSponge.x > rectOfContainer.x + rectOfContainer.width ||
-            rectOfSponge.x + rectOfSponge.width < rectOfContainer.x ||
-            rectOfSponge.y > rectOfContainer.y + rectOfContainer.height ||
-            rectOfSponge.y + rectOfSponge.height < rectOfContainer.y)) {
+    containerRef.value.addEventListener('mousemove', (e) => {
+        const spongeWidth = spongeRef.offsetWidth;
+        const spongeHeight = spongeRef.offsetHeight;
+
+        const x = e.clientX;
+        const y = e.clientY;
+        
+        const futureRect = {
+            x: x,
+            y: y,
+            width: spongeWidth,
+            height: spongeHeight
+        };
+
+        if (!(futureRect.x > rectOfContainer.x + rectOfContainer.width ||
+            futureRect.x + futureRect.width < rectOfContainer.x ||
+            futureRect.y > rectOfContainer.y + rectOfContainer.height ||
+            futureRect.y + futureRect.height < rectOfContainer.y)) {
             // Collision detected
-            console.log('Sponge is colliding with container');
-        } else {
             console.log('no detected')
+            spongeRef.style.transform = `translate(${x}px, ${y}px)`;
+
+        } else {
+            console.log('⛔ Collision – movement blocked');
         }
+
+        document.querySelectorAll('.dirt').forEach((el, index) => {
+            const followerRect = spongeRef.getBoundingClientRect();
+            const dirtRect = el.getBoundingClientRect();
+
+            if (isRectOverlap(followerRect, dirtRect)) {
+                setTimeout(() => {
+                    el.classList.add('cleaned');
+                }, 5000);
+            }
+        });
+
+        function isRectOverlap(rect1, rect2) {
+        return !(
+            rect1.x + rect1.width <= rect2.x ||  // rect1 is volledig links van rect2
+            rect2.x + rect2.width <= rect1.x ||  // rect2 is volledig links van rect1
+            rect1.y + rect1.height <= rect2.y || // rect1 is volledig boven rect2
+            rect2.y + rect2.height <= rect1.y    // rect2 is volledig boven rect1
+        );
+    }
     });
 }
+
 
 onMounted(() => {
     const loveInterval = setInterval(() => {

@@ -8,44 +8,18 @@ const spongeRef = ref<HTMLElement | null>(null);
 const emit = defineEmits(['updateTemp', 'tempClicked', 'spongeSpawned']);
 
 const spawn_sponge = () => {
-    if (spongeRef.value) return; // voorkom dubbele sponge
+    if(spongeRef.value) {
+        spongeRef.value.remove();
+    }
 
     const element = document.createElement('div');
     element.innerHTML += '<img src="images/sponge-actor.png" id="sponge-actor"/>';
 
     container?.appendChild(element);
     spongeRef.value = document.getElementById('sponge-actor') as HTMLElement;
+    spongeRef.value.style.transform = `translate(500%, 500%)`;
+
     emit('spongeSpawned', spongeRef.value);
-    
-    document.addEventListener('mousemove', (e) => {
-        if (!spongeRef.value) return;
-
-        const x = e.clientX;
-        const y = e.clientY;
-
-        spongeRef.value.style.transform = `translate(${x}px, ${y}px)`;
-
-        document.querySelectorAll('.dirt').forEach((el, index) => {
-            const followerRect = spongeRef.value?.getBoundingClientRect();
-            const dirtRect = el.getBoundingClientRect();
-
-            if (isRectOverlap(followerRect, dirtRect)) {
-                setTimeout(() => {
-                    el.classList.add('cleaned');
-                }, 5000);
-            }
-        });
-
-    });
-
-    function isRectOverlap(rect1, rect2) {
-        return !(
-            rect1.x + rect1.width <= rect2.x ||  // rect1 is volledig links van rect2
-            rect2.x + rect2.width <= rect1.x ||  // rect2 is volledig links van rect1
-            rect1.y + rect1.height <= rect2.y || // rect1 is volledig boven rect2
-            rect2.y + rect2.height <= rect1.y    // rect2 is volledig boven rect1
-        );
-    }
 }
 
 const tempClicked = () => {
