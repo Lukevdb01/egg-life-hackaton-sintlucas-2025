@@ -89,11 +89,8 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
             futureRect.y > rectOfContainer.y + rectOfContainer.height ||
             futureRect.y + futureRect.height < rectOfContainer.y)) {
             // Collision detected
-            console.log('no detected')
             spongeRef.style.transform = `translate(${x}px, ${y}px)`;
 
-        } else {
-            console.log('⛔ Collision – movement blocked');
         }
 
         document.querySelectorAll('.dirt').forEach((el, index) => {
@@ -101,9 +98,9 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
             const dirtRect = el.getBoundingClientRect();
 
             if (isRectOverlap(followerRect, dirtRect)) {
-                setTimeout(() => {
-                    el.classList.add('cleaned');
-                }, 5000);
+                el.addEventListener('click', () => {
+                    el.remove();
+                });
             }
         });
 
