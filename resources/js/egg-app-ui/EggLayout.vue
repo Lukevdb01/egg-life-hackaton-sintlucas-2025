@@ -184,7 +184,6 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
 
 }
 
-
 onMounted(() => {
     const loveInterval = setInterval(() => {
         if (!shouldHatch.value) {
