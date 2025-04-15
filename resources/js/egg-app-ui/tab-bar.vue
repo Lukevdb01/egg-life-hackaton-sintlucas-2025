@@ -4,34 +4,37 @@ import { onMounted, ref } from 'vue';
 const container = document.getElementById('container');
 const toggle_lamp = ref(false);
 const eyesRef = ref<NodeListOf<HTMLElement>>();
-
-const emit = defineEmits(['updateTemp', 'tempClicked']);
+const spongeRef = ref<HTMLElement | null>(null);
+const emit = defineEmits(['updateTemp', 'tempClicked', 'spongeSpawned']);
 
 const spawn_sponge = () => {
+    if (spongeRef.value) return; // voorkom dubbele sponge
+
     const element = document.createElement('div');
     element.innerHTML += '<img src="images/sponge-actor.png" id="sponge-actor"/>';
 
     container?.appendChild(element);
-    const sponge = document.getElementById('sponge-actor');
-    const follower = document.getElementById('sponge-actor');
+    spongeRef.value = document.getElementById('sponge-actor') as HTMLElement;
+    emit('spongeSpawned', spongeRef.value);
+    
     document.addEventListener('mousemove', (e) => {
+        if (!spongeRef.value) return;
+
         const x = e.clientX;
         const y = e.clientY;
 
-        follower.style.transform = `translate(${x}px, ${y}px)`;
+        spongeRef.value.style.transform = `translate(${x}px, ${y}px)`;
 
-        if (sponge) {
-            document.querySelectorAll('.dirt').forEach((el, index) => {
-                const followerRect = follower?.getBoundingClientRect();
-                const dirtRect = el.getBoundingClientRect();
+        document.querySelectorAll('.dirt').forEach((el, index) => {
+            const followerRect = spongeRef.value?.getBoundingClientRect();
+            const dirtRect = el.getBoundingClientRect();
 
-                if (isRectOverlap(followerRect, dirtRect)) {
-                    setTimeout(() => {
-                        el.classList.add('cleaned');
-                    }, 5000);
-                }
-            });
-        }
+            if (isRectOverlap(followerRect, dirtRect)) {
+                setTimeout(() => {
+                    el.classList.add('cleaned');
+                }, 5000);
+            }
+        });
 
     });
 
