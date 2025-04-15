@@ -51,7 +51,7 @@ onMounted(() => {
     <div class="h-[110px] rounded-t-[2vw] w-full bg-white flex items-center justify-between px-4">
         <ol class="flex justify-center items-center gap-4">
             <img @click="tempClicked" src="images/temperature-increase.svg">
-            <button @click="lamp" class="text-black">lamp</button>
+            <img @click="lamp" :src="toggle_lamp ? 'images/lamp_off.svg' : 'images/lamp_on.svg'" class="p-3 text-black">
         </ol>
         <img @click="spawn_sponge()" id="icon" src="images/sponge.png">
     </div>
