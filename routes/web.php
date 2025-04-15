@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EggController;
+use App\Http\Controllers\FootballController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -19,6 +20,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/stage-one', [EggController::class, 'stageOne'])->name('stage-one');
     Route::post('/stage-two', [EggController::class, 'stageTwo'])->name('stage-two');
     Route::post('/egg-dead', [EggController::class, 'eggDead'])->name('egg-dead');
+
+    Route::get('/football', [FootballController::class, 'overview'])->name('football');
 });
 
 //require __DIR__.'/settings.php';
