@@ -9,6 +9,9 @@ import audioEngine from "@/scripts/audioEngine";
 
 const audioCtx = new AudioContext();
 const ae = new audioEngine(audioCtx);
+const shouldCrack = ref(false);
+const shouldHatch = ref(false);
+const shouldBeDeath = ref(false);
 
 const props = defineProps({
     data: {
@@ -34,6 +37,7 @@ watchEffect(() => {
             stageOneTimeout = setTimeout(() => {
                 axios.post('/stage-one', {});
                 stageOneTimeout = null; // Reset after post
+                shouldCrack.value = true;
             }, 60000); // 60 seconds
         }
     } else {
@@ -49,6 +53,7 @@ watchEffect(() => {
             stageTwoTimeout = setTimeout(() => {
                 axios.post('/stage-two', {});
                 stageTwoTimeout = null;
+                shouldHatch.value = true;
             }, 60000);
         }
     } else {
@@ -64,7 +69,8 @@ watchEffect(() => {
             deadTimeout = setTimeout(() => {
                 axios.post('/egg-dead', {});
                 deadTimeout = null;
-            }, 30000);
+                shouldBeDeath.value = true;
+            }, 500);
         }
     } else {
         if (deadTimeout) {
@@ -122,9 +128,6 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
     containerRef.value.addEventListener('mousemove', (e: MouseEvent) => {
         const spongeEl = spongeRef as HTMLElement;
 
-        const x = e.clientX;
-        const y = e.clientY;
-
         const spongeWidth = spongeEl.offsetWidth;
         const spongeHeight = spongeEl.offsetHeight;
 
@@ -163,7 +166,7 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
                     ae.playAudioFromUrl("audio/scrub.mp3", 0.1);
                     dirtEl.remove();
                     immediateLoveIncrease();
-                    },
+                },
                     { once: true });
             }
         });
@@ -184,10 +187,14 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
 
 onMounted(() => {
     const loveInterval = setInterval(() => {
-        decrementLove();
+        if (!shouldHatch.value) {
+            decrementLove();
+        }
     }, 10000);
     const temperatureInterval = setInterval(() => {
-        decrementTemperature();
+        if (!shouldHatch.value) {
+            decrementTemperature();
+        }
     }, 10000);
 
     watchEffect(() => {
@@ -202,7 +209,8 @@ onMounted(() => {
 <template>
     <Header :love="love" :temperature="temperature" :data="data" />
     <div id="container" class="h-full w-full flex items-center justify-center">
-        <Egg :temperature="temperature" @eggClicked="updateLove" @poopDamage="decrementLove"/>
+        <Egg :should-be-death="shouldBeDeath" :should-hatch="shouldHatch" :should-crack="shouldCrack" :temperature="temperature" @eggClicked="updateLove"
+            @poopDamage="decrementLove" />
     </div>
     <TabBar @sponge-spawned="setCheckContainerBounds" @tempClicked="updateTemp" />
 </template>
