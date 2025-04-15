@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import {onBeforeUnmount, onMounted, ref} from 'vue'
 import axios from "axios";
 
 import Face from './components/Face.vue';
@@ -11,7 +11,7 @@ const props = defineProps({
     },
 })
 
-const emit = defineEmits(['updateLove', 'eggClicked']);
+const emit = defineEmits(['updateLove', 'eggClicked', 'poopDamage']);
 
 const temperature = ref(props.temperature)
 const color1 = ref('rgba(186, 45, 45, 1)')
@@ -36,19 +36,32 @@ const addDirt = (c) => {
     dirtElement.style.translate += `${offsetX}% ${offsetY}%`;
 
     c.appendChild(dirtElement);
+
+    setTimeout(() => {
+        emit('poopDamage');
+    }, 3000);
 }
 
 onMounted(() => {
     const eggContainer = document.getElementById('egg-container');
     addDirt(eggContainer);
 
+    const poopInterval = setInterval(() => {
+        addDirt(eggContainer);
+    }, 30000);
+
+    // 🧼 Escape key removes sponge if present
     window.addEventListener('keyup', (e) => {
-        if(e.key === "Escape") {
+        if (e.key === "Escape") {
             const sponge = document.getElementById('sponge-actor');
-            if(sponge) {
+            if (sponge) {
                 sponge.remove();
             }
         }
+    });
+
+    onBeforeUnmount(() => {
+        clearInterval(poopInterval);
     });
 });
 </script>
