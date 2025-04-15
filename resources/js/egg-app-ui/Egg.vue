@@ -50,7 +50,6 @@ onMounted(() => {
         addDirt(eggContainer);
     }, 30000);
 
-    // 🧼 Escape key removes sponge if present
     window.addEventListener('keyup', (e) => {
         if (e.key === "Escape") {
             const sponge = document.getElementById('sponge-actor');

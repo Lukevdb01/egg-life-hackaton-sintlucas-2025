@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('egg', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->unique()->constrained()->onDelete('cascade');
-            $table->float('temperature')->default(37.0);
-            $table->float('love')->default(73)->min(0)->max(100);
+            $table->float('temperature')->default(0);
+            $table->float('love')->default(0)->min(0)->max(100);
+            $table->boolean('first_stage')->default(false);
+            $table->boolean('second_stage')->default(false);
             $table->timestamps();
         });
     }

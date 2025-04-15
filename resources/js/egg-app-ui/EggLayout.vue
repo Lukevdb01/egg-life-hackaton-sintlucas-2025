@@ -12,22 +12,41 @@ const props = defineProps({
         default: () => ({}),
     },
 });
+
+const loveClickCount = ref(0);
+const temperatureClickCount = ref(0);
 const love = ref(props.data.egg.love);
 const temperature = ref(props.data.egg.temperature);
 const containerRef = ref<HTMLElement | null>(null);
 const spongeRef = ref<HTMLElement | null>(null);
 
+watchEffect(() => {
+    if (love.value > 50 && temperature.value > 50) {
+        axios.post('/stage-one', {})
+
+    }
+    if (love.value === 100 && temperature.value === 100) {
+        axios.post('/stage-two', {})
+    }
+});
+
 const updateLove = async () => {
-    if (love.value < 100) {
+    loveClickCount.value++;
+
+    if (loveClickCount.value >= 10) {
         const response = await axios.post('/click-increase-update-love', {});
         love.value = response.data.love;
+        loveClickCount.value = 0; // Reset after sending
     }
 };
 
 const updateTemp = async () => {
-    if (temperature.value < 100) {
+    temperatureClickCount.value++;
+
+    if (temperatureClickCount.value >= 10) {
         const response = await axios.post('/click-increase-update-temperature', {});
         temperature.value = response.data.temperature;
+        temperatureClickCount.value = 0; // Reset after sending
     }
 };
 
@@ -57,7 +76,7 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
 
         const x = e.clientX;
         const y = e.clientY;
-        
+
         const futureRect = {
             x: x,
             y: y,
