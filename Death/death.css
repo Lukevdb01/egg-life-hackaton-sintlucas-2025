@@ -25,7 +25,7 @@ body {
 
 .game-title {
     font-size: 48px; /* Adjust size as needed */
-    color: white; /* Adjust color as needed */
+    color: rgb(255, 188, 80); /* Adjust color as needed */
     margin-bottom: 30px; /* Space between title and button */
     opacity: 0; /* Start invisible */
     transform: translateY(-100px); /* Start above */
@@ -46,7 +46,7 @@ body {
 }
 
 .play-button:hover {
-    background-color: #cfcfcf;
+    background-color: #c4c4c4;
 }
 
 .sliding-image-container {
