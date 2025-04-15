@@ -6,6 +6,10 @@ const toggle_lamp = ref(false);
 const eyesRef = ref<NodeListOf<HTMLElement>>();
 const spongeRef = ref<HTMLElement | null>(null);
 const emit = defineEmits(['updateTemp', 'tempClicked', 'spongeSpawned']);
+import audioEngine from "@/scripts/audioEngine";
+
+const audioCtx = new AudioContext();
+const ae = new audioEngine(audioCtx);
 
 const spawn_sponge = () => {
     if(spongeRef.value) {
@@ -28,12 +32,14 @@ const tempClicked = () => {
 
 const lamp = () => {
     if (!toggle_lamp.value) {
+        ae.playAudioFromUrl("/audio/lamp_click.mp3");
         document.body.style.background = '#3A3A3A';
         toggle_lamp.value = true;
         eyesRef.value?.forEach((el) => {
             el.classList.add('close-eyes');
         });
     } else {
+        ae.playAudioFromUrl("/audio/lamp_click.mp3");
         document.body.style.background = "#ebebeb";
         toggle_lamp.value = false;
         eyesRef.value?.forEach((el) => {
