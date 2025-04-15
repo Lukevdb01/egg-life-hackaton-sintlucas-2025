@@ -95,6 +95,11 @@ const immediateLoveIncrease = async () => {
     love.value = response.data.love;
 };
 
+const immediateTempIncrease = async () => {
+    const response = await axios.post('/click-increase-update-temperature', {});
+    temperature.value = response.data.temperature;
+};
+
 const updateTemp = async () => {
     temperatureClickCount.value++;
 
@@ -184,6 +189,12 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
 
 }
 
+const sleeping = () => {
+    for (let i = 0; i < 5; i++) {
+        immediateTempIncrease();
+        immediateLoveIncrease();
+    }
+};
 
 onMounted(() => {
     const loveInterval = setInterval(() => {
@@ -210,7 +221,7 @@ onMounted(() => {
     <Header :love="love" :temperature="temperature" :data="data" />
     <div id="container" class="h-full w-full flex items-center justify-center">
         <Egg :should-be-death="shouldBeDeath" :should-hatch="shouldHatch" :should-crack="shouldCrack" :temperature="temperature" @eggClicked="updateLove"
-            @poopDamage="decrementLove" />
+            @poopDamage="decrementLove"/>
     </div>
-    <TabBar @sponge-spawned="setCheckContainerBounds" @tempClicked="updateTemp" />
+    <TabBar @sponge-spawned="setCheckContainerBounds" @tempClicked="updateTemp" @sleeping="sleeping"/>
 </template>

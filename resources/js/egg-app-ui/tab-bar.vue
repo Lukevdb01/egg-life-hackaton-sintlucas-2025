@@ -4,9 +4,10 @@ import { router } from '@inertiajs/vue3';
 
 const container = document.getElementById('container');
 const toggle_lamp = ref(false);
+const isSleepingCooldown = ref(false); // Cooldown tracker
 const eyesRef = ref<NodeListOf<HTMLElement>>();
 const spongeRef = ref<HTMLElement | null>(null);
-const emit = defineEmits(['updateTemp', 'tempClicked', 'spongeSpawned']);
+const emit = defineEmits(['updateTemp', 'tempClicked', 'spongeSpawned', 'sleeping']);
 import audioEngine from "@/scripts/audioEngine";
 
 const audioCtx = new AudioContext();
@@ -32,20 +33,33 @@ const tempClicked = () => {
 };
 
 const lamp = () => {
+    if (isSleepingCooldown.value) {
+        return; // Prevent toggling during the 1-minute cooldown
+    }
+
     if (!toggle_lamp.value) {
         ae.playAudioFromUrl("/audio/lamp_click.mp3");
         document.body.style.background = '#3A3A3A';
         toggle_lamp.value = true;
+        emit('sleeping');
         eyesRef.value?.forEach((el) => {
             el.classList.add('close-eyes');
         });
-    } else {
-        ae.playAudioFromUrl("/audio/lamp_click.mp3");
-        document.body.style.background = "#ebebeb";
-        toggle_lamp.value = false;
-        eyesRef.value?.forEach((el) => {
-            el.classList.remove('close-eyes');
-        });
+
+        // Automatically turn off after 5 seconds
+        setTimeout(() => {
+            toggle_lamp.value = false;
+            document.body.style.background = "#ebebeb";
+            eyesRef.value?.forEach((el) => {
+                el.classList.remove('close-eyes');
+            });
+        }, 5000); // 5 seconds timer
+
+        // Start cooldown for 1 minute before being able to toggle it back on
+        isSleepingCooldown.value = true;
+        setTimeout(() => {
+            isSleepingCooldown.value = false; // Reset cooldown after 1 minute
+        }, 60000); // 1 minute cooldown
     }
 }
 
