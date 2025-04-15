@@ -48,9 +48,8 @@ onMounted(() => {
 
     const poopInterval = setInterval(() => {
         addDirt(eggContainer);
-    }, 30000);
+    }, 10000);
 
-    // 🧼 Escape key removes sponge if present
     window.addEventListener('keyup', (e) => {
         if (e.key === "Escape") {
             const sponge = document.getElementById('sponge-actor');
