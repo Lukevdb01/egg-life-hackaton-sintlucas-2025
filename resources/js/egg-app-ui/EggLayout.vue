@@ -55,7 +55,7 @@ watchEffect(() => {
     }
 
     // 💀 Egg Dead
-    if (love.value === 0 && temperature.value === 0) {
+    if (love.value === 0 || temperature.value === 0) {
         if (!deadTimeout) {
             deadTimeout = setTimeout(() => {
                 axios.post('/egg-dead', {});
@@ -78,6 +78,11 @@ const updateLove = async () => {
         love.value = response.data.love;
         loveClickCount.value = 0; // Reset after sending
     }
+};
+
+const immediateLoveIncrease = async () => {
+    const response = await axios.post('/click-increase-update-love', {});
+    love.value = response.data.love;
 };
 
 const updateTemp = async () => {
@@ -149,10 +154,14 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
         document.querySelectorAll('.dirt').forEach((dirtEl: Element) => {
             const dirtRect = dirtEl.getBoundingClientRect();
 
-            if (isRectOverlap(followerRect, dirtRect)) {
+            if (isRectOverlap(followerRect, dirtRect) && !dirtEl.classList.contains('clickable')) {
+                dirtEl.classList.add('clickable');
+
                 dirtEl.addEventListener('click', () => {
                     dirtEl.remove();
-                }, { once: true }); // voorkomt dubbele event listeners
+                    immediateLoveIncrease();
+                    },
+                    { once: true });
             }
         });
     });

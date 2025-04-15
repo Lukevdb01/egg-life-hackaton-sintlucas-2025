@@ -48,7 +48,7 @@ onMounted(() => {
 
     const poopInterval = setInterval(() => {
         addDirt(eggContainer);
-    }, 30000);
+    }, 10000);
 
     window.addEventListener('keyup', (e) => {
         if (e.key === "Escape") {

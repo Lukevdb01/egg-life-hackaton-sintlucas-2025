@@ -23,8 +23,7 @@ class EggController extends Controller
 
     public function clickIncreaseUpdateLove(Request $request)
     {
-        return $this->updateLove($request, 3
-        );
+        return $this->updateLove($request, 3);
     }
 
     public function decreaseUpdateLove(Request $request)
