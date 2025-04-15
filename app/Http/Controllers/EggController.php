@@ -96,4 +96,18 @@ class EggController extends Controller
             'second_stage' => $egg->second_stage,
         ]);
     }
+
+    public function eggDead(Request $request): JsonResponse
+    {
+        $user = auth()->user();
+        $egg = $user->egg;
+
+        $egg->alive = false;
+        $egg->save();
+
+        return response()->json([
+                'message' => 'Egg is dead!',
+                'alive' => $egg->alive,
+        ]);
+    }
 }

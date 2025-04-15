@@ -19,13 +19,54 @@ const love = ref(props.data.egg.love);
 const temperature = ref(props.data.egg.temperature);
 const containerRef = ref<HTMLElement | null>(null);
 
-watchEffect(() => {
-    if (love.value > 50 && temperature.value > 50) {
-        axios.post('/stage-one', {})
+let stageOneTimeout: ReturnType<typeof setTimeout> | null = null;
+let stageTwoTimeout: ReturnType<typeof setTimeout> | null = null;
+let deadTimeout: ReturnType<typeof setTimeout> | null = null;
 
+watchEffect(() => {
+    // 🥚 Stage One
+    if (love.value > 50 && temperature.value > 50) {
+        if (!stageOneTimeout) {
+            stageOneTimeout = setTimeout(() => {
+                axios.post('/stage-one', {});
+                stageOneTimeout = null; // Reset after post
+            }, 60000); // 60 seconds
+        }
+    } else {
+        if (stageOneTimeout) {
+            clearTimeout(stageOneTimeout);
+            stageOneTimeout = null;
+        }
     }
-    if (love.value === 100 && temperature.value === 100) {
-        axios.post('/stage-two', {})
+
+    // 🌟 Stage Two
+    if (love.value > 95 && temperature.value > 95) {
+        if (!stageTwoTimeout) {
+            stageTwoTimeout = setTimeout(() => {
+                axios.post('/stage-two', {});
+                stageTwoTimeout = null;
+            }, 60000);
+        }
+    } else {
+        if (stageTwoTimeout) {
+            clearTimeout(stageTwoTimeout);
+            stageTwoTimeout = null;
+        }
+    }
+
+    // 💀 Egg Dead
+    if (love.value === 0 && temperature.value === 0) {
+        if (!deadTimeout) {
+            deadTimeout = setTimeout(() => {
+                axios.post('/egg-dead', {});
+                deadTimeout = null;
+            }, 30000);
+        }
+    } else {
+        if (deadTimeout) {
+            clearTimeout(deadTimeout);
+            deadTimeout = null;
+        }
     }
 });
 
