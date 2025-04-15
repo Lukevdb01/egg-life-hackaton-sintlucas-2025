@@ -5,6 +5,7 @@ import Header from "@/egg-app-ui/header.vue";
 import axios from "axios";
 import {onMounted, ref, watchEffect} from "vue";
 import TabBar from "@/egg-app-ui/tab-bar.vue";
+import audioEngine from "@/scripts/audioEngine";
 
 const props = defineProps({
     data: {
@@ -14,6 +15,11 @@ const props = defineProps({
 });
 const love = ref(props.data.egg.love);
 const temperature = ref(props.data.egg.temperature);
+
+const audioCtx = new AudioContext();
+const AudioEngine = new audioEngine(audioCtx);
+
+const clickSoundUrl = "/sounds/click.mp3";
 
 const updateLove = async () => {
   if (love.value < 100) {
