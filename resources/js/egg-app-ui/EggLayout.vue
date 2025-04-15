@@ -5,6 +5,10 @@ import Header from "@/egg-app-ui/header.vue";
 import axios from "axios";
 import { onMounted, ref, watchEffect } from "vue";
 import TabBar from "@/egg-app-ui/tab-bar.vue";
+import audioEngine from "@/scripts/audioEngine";
+
+const audioCtx = new AudioContext();
+const ae = new audioEngine(audioCtx);
 
 const props = defineProps({
     data: {
@@ -78,9 +82,7 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
 
         if (isInsideContainer) {
             spongeEl.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-        } 
-        
-        
+        }
 
         // Detecteer overlapping met vuil
         const followerRect = spongeEl.getBoundingClientRect();
@@ -89,6 +91,7 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
 
             if (isRectOverlap(followerRect, dirtRect)) {
                 dirtEl.addEventListener('click', () => {
+                    ae.playAudioFromUrl("audio/scrub.mp3", 0.1);
                     dirtEl.remove();
                 }, { once: true }); // voorkomt dubbele event listeners
             }
@@ -104,7 +107,6 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
             rect2.y + rect2.height <= rect1.y
         );
     }
-
 }
 
 
