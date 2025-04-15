@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { router } from '@inertiajs/vue3';
 
 const container = document.getElementById('container');
 const toggle_lamp = ref(false);
@@ -48,6 +49,11 @@ const lamp = () => {
     }
 }
 
+
+const goToFootball = () => {
+    router.visit('/football');
+};
+
 onMounted(() => {
     eyesRef.value = document.querySelectorAll<HTMLElement>('.eye');
 });
@@ -59,7 +65,12 @@ onMounted(() => {
             <img @click="tempClicked" src="images/temperature-increase.svg">
             <img @click="lamp" :src="toggle_lamp ? 'images/lamp_off.svg' : 'images/lamp_on.svg'" class="p-3 text-black">
         </ol>
-        <img @click="spawn_sponge()" id="icon" src="images/sponge.png">
+        <div class="flex items-center gap-10">
+            <button class="cursor-pointer bg-green-100 rounded p-2" @click="goToFootball">
+                Soccer Game
+            </button>
+            <img @click="spawn_sponge()" id="icon" src="images/sponge.png">
+        </div>
     </div>
 </template>
 
