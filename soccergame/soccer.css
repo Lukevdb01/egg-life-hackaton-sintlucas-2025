@@ -1,0 +1,17 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+
+#soccerCanvas {
+    border: 2px solid green; /* Soccer field color */
+    background-color: lightgreen; /* Lighter shade for field fallback */
+    background-image: url("field.jpeg");
+    background-size: contain; /* Use 'contain' to fit the whole image */
+    background-repeat: no-repeat; /* Prevent tiling */
+    background-position: center; /* Center the image within the canvas */
+}
