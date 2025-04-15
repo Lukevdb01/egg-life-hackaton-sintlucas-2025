@@ -51,7 +51,7 @@ onMounted(() => {
   }, 10000);
   const temperatureInterval = setInterval(() => {
     decrementTemperature();
-  }, 50000);
+  }, 10000);
 
   watchEffect(() => {
     return () => {
@@ -63,7 +63,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Header :love="love" :temperature="temperature"/>
+  <Header :love="love" :temperature="temperature" :data="data"/>
     <div id="container" class="h-full w-full flex items-center justify-center">
         <Egg :temperature="temperature" @eggClicked="updateLove"/>
     </div>

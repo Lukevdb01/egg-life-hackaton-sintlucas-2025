@@ -13,13 +13,21 @@ const props = defineProps({
         default: 0,
     },
     data:{
-        type: Object,
+        type: Array,
     }
 });
 
+
+const isVisible = ref(true);
 computed(() => `${100 - props.love}%`);
 const color1 = ref('rgba(79, 78, 78, 1)') // ending color of the gradient
 const color2 = ref('rgba(186, 45, 45, 1)') // starting color of the gradient
+
+onMounted(() => {
+    setTimeout(() => {
+        isVisible.value = false;
+    }, 15000); // 15 seconds
+});
 </script>
 
 <template>
@@ -42,8 +50,8 @@ const color2 = ref('rgba(186, 45, 45, 1)') // starting color of the gradient
             <p class="text-black font-bold">% {{ love }}</p>
         </ol>
         <div class="absolute w-full flex items-center justify-center left-0 right-0 top-10 text-black">
-            <section class="px-5 py-3 bg-white border-red-500 border-4 rounded-lg border-solid">
-                <p>{data.user.name }'s Hatching Lab🐣</p>
+            <section v-if="isVisible" class="px-5 py-3 bg-white border-red-500 border-4 rounded-lg border-solid">
+                <p>{{ data.user.name }}'s Hatching Lab🐣</p>
             </section>
         </div>
     </header>
