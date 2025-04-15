@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 </script>
 
 <template>
+
     <Head title="Welcome">
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
@@ -50,7 +51,8 @@ body {
     height: 100vh;
     z-index: 1;
     background: unset;
-    background-image: url('images/back.png') !important; /* Replace with your image path */
+    background-image: url('images/back.png') !important;
+    /* Replace with your image path */
     background-repeat: repeat-x;
     background-position: 0 0;
     animation: slideBackground 30s linear infinite;
@@ -58,13 +60,20 @@ body {
 
 .game-title {
     z-index: 2 !important;
-    font-size: 48px; /* Adjust size as needed */
-    color: white; /* Adjust color as needed */
-    margin-bottom: 30px; /* Space between title and button */
-    opacity: 0; /* Start invisible */
-    transform: translateY(-100px); /* Start above */
-    animation: slideDownTitle 1s ease-out 0.5s forwards; /* Slide down with a delay */
-    text-align: center; /* Center the title */
+    font-size: 48px;
+    /* Adjust size as needed */
+    color: white;
+    /* Adjust color as needed */
+    margin-bottom: 30px;
+    /* Space between title and button */
+    opacity: 0;
+    /* Start invisible */
+    transform: translateY(-100px);
+    /* Start above */
+    animation: slideDownTitle 1s ease-out 0.5s forwards;
+    /* Slide down with a delay */
+    text-align: center;
+    /* Center the title */
 }
 
 .play-button {
@@ -90,35 +99,65 @@ body {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    bottom: 50px; /* Keep the final bottom position */
+    bottom: 50px;
+    /* Keep the final bottom position */
     z-index: 10;
-    animation: slideUpInitial 1s ease-out forwards, rotateIdle 2s linear infinite 1s; /* Initial slide up and rotate idle */
+    animation: slideUpInitial 1s ease-out forwards, rotateIdle 2s linear infinite 1s;
+    /* Initial slide up and rotate idle */
 }
 
 .sliding-image {
-    width: 200px; /* Adjust the size as needed */
+    width: 200px;
+    /* Adjust the size as needed */
     height: auto;
     display: block;
 }
 
 @keyframes slideBackground {
-    0% { background-position: 0 0; }
-    100% { background-position: -100% 0; }
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
 }
 
 @keyframes slideDownTitle {
-    0% { opacity: 0; transform: translateY(-100px); }
-    100% { opacity: 1; transform: translateY(0); }
+    0% {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes slideUpInitial {
-    0% { bottom: -200px; opacity: 0; }
-    100% { bottom: 50px; opacity: 1; }
+    0% {
+        bottom: -200px;
+        opacity: 0;
+    }
+
+    100% {
+        bottom: 50px;
+        opacity: 1;
+    }
 }
 
 @keyframes rotateIdle {
-    0% { transform: translateX(-50%) rotate(0deg); }
-    50% { transform: translateX(-50%) rotate(5deg); }
-    100% { transform: translateX(-50%) rotate(0deg); }
+    0% {
+        transform: translateX(-50%) rotate(0deg);
+    }
+
+    50% {
+        transform: translateX(-50%) rotate(5deg);
+    }
+
+    100% {
+        transform: translateX(-50%) rotate(0deg);
+    }
 }
 </style>

@@ -50,7 +50,7 @@ onMounted(() => {
             <p class="text-black font-bold">% {{ love }}</p>
         </ol>
         <div class="absolute w-full flex items-center justify-center left-0 right-0 top-10 text-black">
-            <section v-if="isVisible" class="px-5 py-3 bg-white border-red-500 border-4 rounded-lg border-solid">
+            <section class="px-5 py-3 bg-white border-red-500 border-4 rounded-lg border-solid">
                 <p>{{ data.user.name }}'s Hatching Lab🐣</p>
             </section>
         </div>

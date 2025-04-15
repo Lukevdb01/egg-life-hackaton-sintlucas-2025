@@ -5,7 +5,7 @@ class AudioEngine {
         this.audioCtx = _ctx;
     }
 
-    async playAudioFromUrl(url: string, volume: number = 1.0): Promise<void> {
+    async playAudioFromUrl(url: string, volume: number = 1.0, loop: boolean = false): Promise<void> {
         try {
             const response = await fetch(url);
             const arrayBuffer = await response.arrayBuffer();
@@ -13,6 +13,7 @@ class AudioEngine {
 
             const source = this.audioCtx.createBufferSource();
             source.buffer = audioBuffer;
+            source.loop = loop; // <-- Hier stel je looping in
 
             const gainNode = this.audioCtx.createGain();
             gainNode.gain.value = volume;
