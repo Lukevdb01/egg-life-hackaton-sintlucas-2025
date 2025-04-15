@@ -17,21 +17,85 @@ const props = defineProps({
     },
 });
 
+const loveClickCount = ref(0);
+const temperatureClickCount = ref(0);
 const love = ref(props.data.egg.love);
 const temperature = ref(props.data.egg.temperature);
 const containerRef = ref<HTMLElement | null>(null);
 
+let stageOneTimeout: ReturnType<typeof setTimeout> | null = null;
+let stageTwoTimeout: ReturnType<typeof setTimeout> | null = null;
+let deadTimeout: ReturnType<typeof setTimeout> | null = null;
+
+watchEffect(() => {
+    // 🥚 Stage One
+    if (love.value > 50 && temperature.value > 50) {
+        if (!stageOneTimeout) {
+            stageOneTimeout = setTimeout(() => {
+                axios.post('/stage-one', {});
+                stageOneTimeout = null; // Reset after post
+            }, 60000); // 60 seconds
+        }
+    } else {
+        if (stageOneTimeout) {
+            clearTimeout(stageOneTimeout);
+            stageOneTimeout = null;
+        }
+    }
+
+    // 🌟 Stage Two
+    if (love.value > 95 && temperature.value > 95) {
+        if (!stageTwoTimeout) {
+            stageTwoTimeout = setTimeout(() => {
+                axios.post('/stage-two', {});
+                stageTwoTimeout = null;
+            }, 60000);
+        }
+    } else {
+        if (stageTwoTimeout) {
+            clearTimeout(stageTwoTimeout);
+            stageTwoTimeout = null;
+        }
+    }
+
+    // 💀 Egg Dead
+    if (love.value === 0 || temperature.value === 0) {
+        if (!deadTimeout) {
+            deadTimeout = setTimeout(() => {
+                axios.post('/egg-dead', {});
+                deadTimeout = null;
+            }, 30000);
+        }
+    } else {
+        if (deadTimeout) {
+            clearTimeout(deadTimeout);
+            deadTimeout = null;
+        }
+    }
+});
+
 const updateLove = async () => {
-    if (love.value < 100) {
+    loveClickCount.value++;
+
+    if (loveClickCount.value >= 10) {
         const response = await axios.post('/click-increase-update-love', {});
         love.value = response.data.love;
+        loveClickCount.value = 0; // Reset after sending
     }
 };
 
+const immediateLoveIncrease = async () => {
+    const response = await axios.post('/click-increase-update-love', {});
+    love.value = response.data.love;
+};
+
 const updateTemp = async () => {
-    if (temperature.value < 100) {
+    temperatureClickCount.value++;
+
+    if (temperatureClickCount.value >= 10) {
         const response = await axios.post('/click-increase-update-temperature', {});
         temperature.value = response.data.temperature;
+        temperatureClickCount.value = 0; // Reset after sending
     }
 };
 
@@ -57,6 +121,9 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
 
     containerRef.value.addEventListener('mousemove', (e: MouseEvent) => {
         const spongeEl = spongeRef as HTMLElement;
+
+        const x = e.clientX;
+        const y = e.clientY;
 
         const spongeWidth = spongeEl.offsetWidth;
         const spongeHeight = spongeEl.offsetHeight;
@@ -89,11 +156,15 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
         document.querySelectorAll('.dirt').forEach((dirtEl: Element) => {
             const dirtRect = dirtEl.getBoundingClientRect();
 
-            if (isRectOverlap(followerRect, dirtRect)) {
+            if (isRectOverlap(followerRect, dirtRect) && !dirtEl.classList.contains('clickable')) {
+                dirtEl.classList.add('clickable');
+
                 dirtEl.addEventListener('click', () => {
                     ae.playAudioFromUrl("audio/scrub.mp3", 0.1);
                     dirtEl.remove();
-                }, { once: true }); // voorkomt dubbele event listeners
+                    immediateLoveIncrease();
+                    },
+                    { once: true });
             }
         });
     });
@@ -107,6 +178,7 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
             rect2.y + rect2.height <= rect1.y
         );
     }
+
 }
 
 
@@ -130,7 +202,7 @@ onMounted(() => {
 <template>
     <Header :love="love" :temperature="temperature" :data="data" />
     <div id="container" class="h-full w-full flex items-center justify-center">
-        <Egg :temperature="temperature" @eggClicked="updateLove" @poopDamage="decrementLove" />
+        <Egg :temperature="temperature" @eggClicked="updateLove" @poopDamage="decrementLove"/>
     </div>
     <TabBar @sponge-spawned="setCheckContainerBounds" @tempClicked="updateTemp" />
 </template>

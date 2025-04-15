@@ -9,7 +9,7 @@ class Egg extends Model
 {
     protected $table = 'egg';
 
-    protected $fillable = ['user_id', 'temperature', 'love'];
+    protected $fillable = ['user_id', 'temperature', 'love', 'first_stage','second_stage', 'alive'];
 
     public function user(): BelongsTo
     {

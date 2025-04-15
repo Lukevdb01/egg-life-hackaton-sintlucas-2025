@@ -23,7 +23,7 @@ class EggController extends Controller
 
     public function clickIncreaseUpdateLove(Request $request)
     {
-        return $this->updateLove($request, 5);
+        return $this->updateLove($request, 3);
     }
 
     public function decreaseUpdateLove(Request $request)
@@ -51,6 +51,62 @@ class EggController extends Controller
 
     public function clickIncreaseUpdateTemp(Request $request): JsonResponse
     {
-        return $this->uploadTemperature($request, 10);
+        return $this->uploadTemperature($request, 3);
+    }
+
+    public function stageOne(Request $request): JsonResponse
+    {
+        $user = auth()->user();
+        $egg = $user->egg;
+
+        if ($egg->love >= 50 && $egg->temperature >= 50 && !$egg->first_stage) {
+            $egg->first_stage = true;
+            $egg->save();
+
+            return response()->json([
+                'message' => 'Stage one activated!',
+                'first_stage' => $egg->first_stage,
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Conditions not met for stage one.',
+            'first_stage' => $egg->first_stage,
+        ]);
+    }
+
+    public function stageTwo(Request $request): JsonResponse
+    {
+        $user = auth()->user();
+        $egg = $user->egg;
+
+        if ($egg->first_stage && !$egg->second_stage) {
+            $egg->second_stage = true;
+            $egg->save();
+
+            return response()->json([
+                'message' => 'Stage two activated!',
+                'second_stage' => $egg->second_stage,
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Conditions not met for stage two.',
+            'second_stage' => $egg->second_stage,
+        ]);
+    }
+
+    public function eggDead(Request $request): JsonResponse
+    {
+        $user = auth()->user();
+        $egg = $user->egg;
+
+        $egg->alive = false;
+        $egg->save();
+
+        return response()->json([
+                'message' => 'Egg is dead!',
+                'alive' => $egg->alive,
+        ]);
     }
 }
