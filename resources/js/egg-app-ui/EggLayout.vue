@@ -12,10 +12,10 @@ const props = defineProps({
         default: () => ({}),
     },
 });
+
 const love = ref(props.data.egg.love);
 const temperature = ref(props.data.egg.temperature);
 const containerRef = ref<HTMLElement | null>(null);
-const spongeRef = ref<HTMLElement | null>(null);
 
 const updateLove = async () => {
     if (love.value < 100) {
@@ -51,49 +51,60 @@ const setCheckContainerBounds = (spongeRef: HTMLElement) => {
     containerRef.value = document.getElementById('container') as HTMLElement;
     const rectOfContainer = containerRef.value.getBoundingClientRect();
 
-    containerRef.value.addEventListener('mousemove', (e) => {
-        const spongeWidth = spongeRef.offsetWidth;
-        const spongeHeight = spongeRef.offsetHeight;
+    containerRef.value.addEventListener('mousemove', (e: MouseEvent) => {
+        const spongeEl = spongeRef as HTMLElement;
 
-        const x = e.clientX;
-        const y = e.clientY;
-        
+        const spongeWidth = spongeEl.offsetWidth;
+        const spongeHeight = spongeEl.offsetHeight;
+
+        // Plaats de spons gecentreerd onder de cursor
+        const mouseX = e.clientX - spongeWidth / 2;
+        const mouseY = e.clientY - spongeHeight / 2;
+
         const futureRect = {
-            x: x,
-            y: y,
+            x: mouseX,
+            y: mouseY,
             width: spongeWidth,
             height: spongeHeight
         };
 
-        if (!(futureRect.x > rectOfContainer.x + rectOfContainer.width ||
+        // Controleer of de spons binnen de container blijft
+        const isInsideContainer = !(
+            futureRect.x > rectOfContainer.x + rectOfContainer.width ||
             futureRect.x + futureRect.width < rectOfContainer.x ||
             futureRect.y > rectOfContainer.y + rectOfContainer.height ||
-            futureRect.y + futureRect.height < rectOfContainer.y)) {
-            // Collision detected
-            spongeRef.style.transform = `translate(${x}px, ${y}px)`;
+            futureRect.y + futureRect.height < rectOfContainer.y
+        );
 
-        }
+        if (isInsideContainer) {
+            spongeEl.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+        } 
+        
+        
 
-        document.querySelectorAll('.dirt').forEach((el, index) => {
-            const followerRect = spongeRef.getBoundingClientRect();
-            const dirtRect = el.getBoundingClientRect();
+        // Detecteer overlapping met vuil
+        const followerRect = spongeEl.getBoundingClientRect();
+        document.querySelectorAll('.dirt').forEach((dirtEl: Element) => {
+            const dirtRect = dirtEl.getBoundingClientRect();
 
             if (isRectOverlap(followerRect, dirtRect)) {
-                el.addEventListener('click', () => {
-                    el.remove();
-                });
+                dirtEl.addEventListener('click', () => {
+                    dirtEl.remove();
+                }, { once: true }); // voorkomt dubbele event listeners
             }
         });
+    });
 
-        function isRectOverlap(rect1, rect2) {
+    // Hulpfunctie om rechthoekoverlap te detecteren
+    function isRectOverlap(rect1: DOMRect, rect2: DOMRect): boolean {
         return !(
-            rect1.x + rect1.width <= rect2.x ||  // rect1 is volledig links van rect2
-            rect2.x + rect2.width <= rect1.x ||  // rect2 is volledig links van rect1
-            rect1.y + rect1.height <= rect2.y || // rect1 is volledig boven rect2
-            rect2.y + rect2.height <= rect1.y    // rect2 is volledig boven rect1
+            rect1.x + rect1.width <= rect2.x ||
+            rect2.x + rect2.width <= rect1.x ||
+            rect1.y + rect1.height <= rect2.y ||
+            rect2.y + rect2.height <= rect1.y
         );
     }
-    });
+
 }
 
 
@@ -117,7 +128,7 @@ onMounted(() => {
 <template>
     <Header :love="love" :temperature="temperature" :data="data" />
     <div id="container" class="h-full w-full flex items-center justify-center">
-        <Egg :temperature="temperature" @eggClicked="updateLove" @poopDamage="decrementLove"/>
+        <Egg :temperature="temperature" @eggClicked="updateLove" @poopDamage="decrementLove" />
     </div>
     <TabBar @sponge-spawned="setCheckContainerBounds" @tempClicked="updateTemp" />
 </template>
