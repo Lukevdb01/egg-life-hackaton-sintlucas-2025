@@ -72,11 +72,9 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="h-[110px] w-full bg-white flex items-center justify-between px-4">
-        <button @click="tempClicked"><img src="images/temperature-increase.svg"></button>
-    </div>
     <div class="h-[110px] rounded-t-[2vw] w-full bg-white flex items-center justify-between px-4">
         <ol>
+            <button @click="tempClicked"><img src="images/temperature-increase.svg"></button>
             <button @click="lamp" class="text-black">lamp</button>
         </ol>
         <button @click="spawn_sponge()"><img id="icon" src="images/sponge.png"></button>
