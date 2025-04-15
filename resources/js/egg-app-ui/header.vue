@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watchEffect } from 'vue'
-import axios from 'axios';
 
 import Temperature from './components/Temperature.vue';
 
@@ -13,9 +12,12 @@ const props = defineProps({
         type: Number,
         default: 0,
     },
+    data:{
+        type: Object,
+    }
 });
 
-const inverted_love = computed(() => `${100 - props.love}%`)
+computed(() => `${100 - props.love}%`);
 const color1 = ref('rgba(79, 78, 78, 1)') // ending color of the gradient
 const color2 = ref('rgba(186, 45, 45, 1)') // starting color of the gradient
 </script>
@@ -41,7 +43,7 @@ const color2 = ref('rgba(186, 45, 45, 1)') // starting color of the gradient
         </ol>
         <div class="absolute w-full flex items-center justify-center left-0 right-0 top-10 text-black">
             <section class="px-5 py-3 bg-white border-red-500 border-4 rounded-lg border-solid">
-                <p>{{ props.data.user.name }}'s Hatching Lab🐣</p>
+                <p>{{ data.user.name }}'s Hatching Lab🐣</p>
             </section>
         </div>
     </header>

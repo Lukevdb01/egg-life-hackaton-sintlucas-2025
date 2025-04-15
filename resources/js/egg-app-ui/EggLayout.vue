@@ -63,9 +63,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div id="container" class="h-full w-full flex items-center justify-center">
-        <Egg :data="data"/>
-  <Header :love="love" :temperature="temperature"/>
+  <Header :love="love" :temperature="temperature" :data="data"/>
   <div id="container" class="h-full w-full flex items-center bg-[#ebebeb] justify-center">
         <Egg :temperature="temperature" @eggClicked="updateLove"/>
     </div>
