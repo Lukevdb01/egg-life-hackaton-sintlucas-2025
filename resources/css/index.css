@@ -2,8 +2,51 @@
     transition: all 0.2s ease-in-out;
 }
 
+body {
+    background: #ebebeb;
+}
+
 #app {
     display: flex;
     flex-direction: column;
     height: 100vh;
+}
+
+#sponge-actor {
+    width: 64px;
+    height: 64px;
+    transition: none !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.dirt {
+    width: 84px;
+    margin: 0.5rem;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: auto;
+    position: absolute;
+}
+
+.cleaned {
+    display: none;
+}
+
+.close-eyes {
+    height: 3px !important;
+    background-color: black !important;
+    rotate: -6deg;
+}
+
+.close-eyes:nth-child(1) {
+    rotate: 6deg;
+}
+
+.close-eyes .inner-eye {
+    display: none;
 }

@@ -15,6 +15,7 @@ class DashboardController extends Controller
         return inertia('Dashboard', [
             'page_data' => [
                 'egg' => $eggData,
+                'user' => $user
             ],
         ]);
     }
